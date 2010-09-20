@@ -422,9 +422,7 @@ class Smarty_Internal_Template extends Smarty_Internal_Data {
             if ($this->resource_object->isEvaluated) {
                 eval("?>" . $this->compiled_template);
             } else {
-            	$_CompiledFilepath = 'saemc://'.$this->getCompiledFilepath ();
-                include($_CompiledFilepath);  //修改两处include的地方
-                //include($this->getCompiledFilepath ()); 
+                include($this->getCompiledFilepath ()); 
                 // check file dependencies at compiled code
                 if ($this->smarty->compile_check) {
                     if (!empty($this->properties['file_dependency'])) {
@@ -448,7 +446,7 @@ class Smarty_Internal_Template extends Smarty_Internal_Data {
                             ob_get_clean();
                             $this->compileTemplateSource();
                             ob_start();
-                            include($_CompiledFilepath);
+                            include($this->getCompiledFilepath ());
                         } 
                     } 
                 } 

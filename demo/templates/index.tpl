@@ -1,6 +1,7 @@
 {config_load file="test.conf" section="setup"}
 {include file="header.tpl" title=foo}
 
+<B>change content test auto reflash compilefile.</B>
 <PRE>
 
 {* bold and title are read from the config file *}

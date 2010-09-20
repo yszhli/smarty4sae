@@ -243,8 +243,7 @@ class Smarty_Internal_Config {
         if ($this->mustCompile()) {
             $this->compileConfigSource();
         } 
-        $_CompiledFilepath = 'saemc://'.$this->getCompiledFilepath ();
-    	include($_CompiledFilepath); 
+        include($this->getCompiledFilepath ()); 
         // copy global config vars
         foreach ($_config_vars['vars'] as $variable => $value) {
             if ($this->smarty->config_overwrite || !isset($scope->config_vars[$variable])) {

@@ -1,9 +1,14 @@
 <?php
+
+sae_set_display_errors(true);
 require('../libs/Smarty.class.php');
 
 $smarty = new Smarty;
 
 
+$smarty->compile_dir = 'saemc://smartytpl/';
+$smarty->cache_dir = 'saemc://smartytpl/';
+$smarty->compile_locking = false; // 防止调用touch,saemc会自动更新时间，不需要touch
 
 //$smarty->force_compile = true;
 $smarty->debugging = true;

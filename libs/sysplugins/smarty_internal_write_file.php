@@ -20,17 +20,41 @@ class Smarty_Internal_Write_File {
     */
     public static function writeFile($_filepath, $_contents, $smarty)
     {
-       //if()
-       if('saemc://' != substr($_filepath,0,8))
-       {
-			$_filepath = 'saemc://'.$_filepath;
+    	//echo $_filepath.'<br/>';
+    	if('saemc://' != substr($_filepath,0,8))
+        {
+			$_filepath = 'saemc://smartytpl/'.$_filepath;
 		}		
         if (!file_put_contents($_filepath, $_contents)) {
             throw new Exception("unable to write file {$_filepath}");
             return false;
         }
         return true;
-    }
+        
+        $old_umask = umask(0);
+        $_dirpath = dirname($_filepath); 
+        // if subdirs, create dir structure
+        if ($_dirpath !== '.' && !file_exists($_dirpath)) {
+            mkdir($_dirpath, $smarty->_dir_perms, true);
+        } 
+        // write to tmp file, then move to overt file lock race condition
+        $_tmp_file = tempnam($_dirpath, 'wrt');
+
+        if (!file_put_contents($_tmp_file, $_contents)) {
+            umask($old_umask);
+            throw new Exception("unable to write file {$_tmp_file}");
+            return false;
+        } 
+        // remove original file
+        if (file_exists($_filepath))
+            @unlink($_filepath); 
+        // rename tmp file
+        rename($_tmp_file, $_filepath); 
+        // set file permissions
+        chmod($_filepath, $smarty->_file_perms);
+        umask($old_umask);
+        return true;
+    } 
 } 
 
 ?>
