@@ -92,7 +92,7 @@ class Smarty_Internal_CacheResource_File {
     {
         if (!$_template->resource_object->isEvaluated) {
             if (Smarty_Internal_Write_File::writeFile($_template->getCachedFilepath(), $content, $this->smarty) === true) {
-                $_template->cached_timestamp = time();
+                $_template->cached_timestamp = filemtime($_template->getCachedFilepath());
                 return true;
             } 
         } 
